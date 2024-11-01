@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка погодных условий</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+        function addCityField() {
+            const container = document.getElementById('city-fields');
+            const inputGroup = document.createElement('div');
+            inputGroup.classList.add('form-group');
+            inputGroup.innerHTML = `
+                <label for="additional_city">Дополнительный город:</label>
+                <input type="text" name="additional_cities" required>
+                <button type="button" onclick="removeCityField(this)">Удалить город</button>
+            `;
+            container.appendChild(inputGroup);
+        }
+
+        function removeCityField(button) {
+            const inputGroup = button.parentNode;
+            inputGroup.parentNode.removeChild(inputGroup);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Введите начальный и конечный города</h2>
+        <form action="{{ url_for('check_weather') }}" method="POST">
+            <div class="form-group">
+                <label for="start_city">Начальный город:</label>
+                <input type="text" name="start_city" id="start_city" required>
+            </div>
+            <div id="city-fields"></div>
+            <button type="button" class="btn" onclick="addCityField()">Добавить город</button>
+            <div class="form-group">
+                <label for="preference">Режим оценки погоды:</label>
+                <select name="preference" id="preference">
+                    <option value="southern">Южный (предпочтение тёплой погоды)</option>
+                    <option value="northern">Северный (предпочтение холодной погоды)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Проверить погоду</button>
+        </form>
+    </div>
+</body>
+</html>
